@@ -16,12 +16,12 @@ const app = express(); // Initializing express application
 
 //SESSION
 app.use(
-  session({
-    secret: "SecretKey",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-  })
+    session({
+        secret: "SecretKey",
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false },
+    })
 );
 
 //MIDDLEWARE
@@ -33,26 +33,24 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      callbackURL:
-        "https://nodejs-authentication-system-l2pu.onrender.com/auth/google/callback",
-      scope: ["profile", "email"],
-    },
-    function (accessToken, refreshToken, profile, callback) {
-      callback(null, profile);
-    }
-  )
+    new GoogleStrategy({
+            clientID: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            callbackURL: "https://nodejs-authentication-system-l2pu.onrender.com/auth/google/callback",
+            scope: ["profile", "email"],
+        },
+        function(accessToken, refreshToken, profile, callback) {
+            callback(null, profile);
+        }
+    )
 );
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+    done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-  done(null, user);
+    done(null, user);
 });
 
 // Set Templates
@@ -65,7 +63,7 @@ connectUsingMongoose();
 
 //ROUTES
 app.get("/", (req, res) => {
-  res.send("Hey Ninja ! Go to /user/signin for the login page.");
+    res.send("Hey Ninja ! Go to /user/signin for the login page.");
 });
 app.use("/user", router);
 app.use("/auth", authrouter);
@@ -73,5 +71,5 @@ app.use(express.static("public"));
 
 //LISTEN
 app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+    console.log(`Server is running on port ${process.env.PORT}`);
 });
